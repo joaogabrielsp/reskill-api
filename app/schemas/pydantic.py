@@ -138,13 +138,13 @@ class UsuarioResponse(BaseModel):
     nomes do banco para nomes do frontend automaticamente!
     """
     id: int
-    name: str = Field(..., alias="nome")  # banco.nome → frontend.name
+    name: str
     email: str
-    currentProfession: str = Field(..., alias="profissao")  # banco.profissao → frontend.currentProfession
-    experienceLevel: str = Field(..., alias="nivel_experience")  # banco.nivel_experience → frontend.experienceLevel
-    weeklyStudyTime: float = Field(..., alias="tempo_estudo_semanal")  # banco.tempo_estudo_semanal → frontend.weeklyStudyTime
+    currentProfession: str
+    experienceLevel: str
+    weeklyStudyTime: float
     interests: str
-    qualities: List[str]  # Converte JSON string para lista automaticamente
+    qualities: List[str]
 
     class Config:
         # Permite criar response a partir de objetos SQLAlchemy

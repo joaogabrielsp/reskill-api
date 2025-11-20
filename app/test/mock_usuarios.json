@@ -1,0 +1,20 @@
+[
+  {
+    "name": "João Silva",
+    "email": "joao@example.com",
+    "currentProfession": "Operador de Caixa",
+    "experienceLevel": "iniciante",
+    "weeklyStudyTime": 5,
+    "interests": "Tecnologia, Gestão de Projetos",
+    "qualities": ["Dedicado", "Proativo"]
+  },
+  {
+    "name": "Maria Souza",
+    "email": "maria@example.com",
+    "currentProfession": "Assistente Administrativo",
+    "experienceLevel": "intermediario",
+    "weeklyStudyTime": 8,
+    "interests": "Dados, Python",
+    "qualities": ["Organizada", "Comunicativa"]
+  }
+]
