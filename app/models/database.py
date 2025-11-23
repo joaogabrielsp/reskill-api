@@ -5,8 +5,8 @@ from enum import Enum as PyEnum
 import os
 import json
 
-# Configuração do Banco PostgreSQL
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/reskill_db")
+# Configuração do Banco SQLite
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./reskill.db")
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
