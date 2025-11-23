@@ -2,7 +2,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from app.models.database import Usuario, qualidades_to_json, qualidades_from_json
-from app.schemas.pydantic import UsuarioCreate, UsuarioUpdate, UsuarioResponse, MessageResponse, RoadmapResponse
+from app.schemas.pydantic import UsuarioCreate, UsuarioUpdate, UsuarioResponse, MessageResponse, RoadmapResponse, RoadmapStepUpdate
 from app.services.ai_roadmap import gerar_roadmap_ai
 
 
@@ -159,3 +159,36 @@ class Service:
             return None
 
         return Service._format_usuario_response(usuario_db)
+
+    @staticmethod
+    def toggle_step_status(user_id: int, step_id: int, dados: RoadmapStepUpdate, db: Session) -> MessageResponse:
+        if not dados.status:
+            raise ValueError("Status é obrigatório")
+
+        if not user_id or user_id <= 0:
+            raise ValueError("ID de usuário inválido")
+
+        usuario = db.query(Usuario).filter(Usuario.id == user_id).first()
+        if not usuario:
+            raise ValueError("Usuário não encontrado")
+
+        from app.models.database import StatusStep, StatusStepEnum
+
+        status_step = db.query(StatusStep).filter(
+            StatusStep.id_usuario == user_id,
+            StatusStep.id_step == step_id
+        ).first()
+
+        if status_step:
+            status_step.status = StatusStepEnum(dados.status.value)
+        else:
+            status_step = StatusStep(
+                id_usuario=user_id,
+                id_step=step_id,
+                descricao=f"Status do step {step_id}",
+                status=StatusStepEnum(dados.status.value)
+            )
+            db.add(status_step)
+
+        db.commit()
+        return MessageResponse(message="Status atualizado com sucesso", success=True)
