@@ -1,11 +1,12 @@
 from fastapi import FastAPI, Depends
 from app.models.database import create_tables, get_db
-from app.schemas.pydantic import UsuarioCreate, UsuarioUpdate, UsuarioResponse, MessageResponse
+from app.schemas.pydantic import UsuarioCreate, UsuarioUpdate, UsuarioResponse, MessageResponse, RoadmapResponse
 from app.controllers.controller import (
     create_user,
     get_user,
     update_user,
     delete_user,
+    get_roadmap,
 )
 
 app = FastAPI(title="ReSkill API", version="1.0.0")
@@ -20,10 +21,8 @@ def read_item(item_id: int, q: str = None):
 
 @app.on_event("startup")
 def on_startup():
-    # Garante que as tabelas existem
     create_tables()
 
-# ========= ENDPOINTS DE USUÁRIOS =========
 @app.post("/users", response_model=UsuarioResponse, status_code=201)
 def endpoint_create_user(dados: UsuarioCreate, db = Depends(get_db)):
     return create_user(dados, db)
@@ -39,3 +38,7 @@ def endpoint_update_user(user_id: int, dados: UsuarioUpdate, db = Depends(get_db
 @app.delete("/users/{user_id}", response_model=MessageResponse)
 def endpoint_delete_user(user_id: int, db = Depends(get_db)):
     return delete_user(user_id, db)
+
+@app.get("/roadmap", response_model=RoadmapResponse)
+def endpoint_get_roadmap(user_id: int, db = Depends(get_db)):
+    return get_roadmap(user_id, db)
