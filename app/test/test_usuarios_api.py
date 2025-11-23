@@ -15,7 +15,7 @@ def test_criar_usuario(client):
         "qualities": ["Curioso", "Persistente"]
     }
 
-    response = client.post("/usuarios", json=payload)
+    response = client.post("/users", json=payload)
 
     assert response.status_code == 201
     data = response.json()
@@ -30,7 +30,7 @@ def test_criar_usuario(client):
 def test_obter_usuario(client, mock_usuarios):
     usuario = mock_usuarios[0]
 
-    response = client.get(f"/usuarios/{usuario.id}")
+    response = client.get(f"/users/{usuario.id}")
 
     assert response.status_code == 200
     data = response.json()
@@ -48,7 +48,7 @@ def test_atualizar_usuario(client, mock_usuarios):
         "qualities": ["Dedicado", "Organizado"]
     }
 
-    response = client.put(f"/usuarios/{usuario.id}", json=payload)
+    response = client.put(f"/users/{usuario.id}", json=payload)
 
     assert response.status_code == 200
     data = response.json()
@@ -62,11 +62,11 @@ def test_deletar_usuario(client, mock_usuarios):
     usuario = mock_usuarios[0]
 
     # Deleta
-    response = client.delete(f"/usuarios/{usuario.id}")
+    response = client.delete(f"/users/{usuario.id}")
     assert response.status_code == 200
     body = response.json()
     assert body["success"] is True
 
     # Tenta buscar depois → 404
-    response_get = client.get(f"/usuarios/{usuario.id}")
+    response_get = client.get(f"/users/{usuario.id}")
     assert response_get.status_code == 404
